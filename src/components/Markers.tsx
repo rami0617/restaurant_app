@@ -3,21 +3,17 @@ import { StoreType } from "@/interface";
 
 interface MarkerProps {
   map: any;
-  storeDatas: any[];
+  stores: StoreType[];
   setCurrentStore: Dispatch<SetStateAction<any>>;
 }
 
-export default function Markers({
-  map,
-  storeDatas,
-  setCurrentStore,
-}: MarkerProps) {
+export default function Markers({ map, stores, setCurrentStore }: MarkerProps) {
   const loadKakaoMarkers = useCallback(() => {
     if (map) {
-      storeDatas &&
-        storeDatas?.map((store) => {
-          const imageSrc = store.bizcnd_code_nm
-            ? `/images/markers/${store.bizcnd_code_nm}.png`
+      stores &&
+        stores?.map((store) => {
+          const imageSrc = store?.category
+            ? `/images/markers/${store?.category}.png`
             : `/images/markers/default.png`;
 
           const imageSize = new window.kakao.maps.Size(40, 40);
@@ -30,8 +26,8 @@ export default function Markers({
           );
 
           const markerPosition = new window.kakao.maps.LatLng(
-            store.y_dnts,
-            store.x_cnts
+            store?.lat,
+            store?.lng
           );
 
           const marker = new window.kakao.maps.Marker({
@@ -41,7 +37,7 @@ export default function Markers({
 
           marker.setMap(map);
 
-          const content = `<div class="infowindow">${store.upso_nm}</div>`;
+          const content = `<div class="infowindow">${store?.name}</div>`;
 
           const customOverlay = new window.kakao.maps.CustomOverlay({
             position: markerPosition,
@@ -68,7 +64,7 @@ export default function Markers({
           });
         });
     }
-  }, [map, setCurrentStore, storeDatas]);
+  }, [map, setCurrentStore, stores]);
 
   useEffect(() => {
     loadKakaoMarkers();

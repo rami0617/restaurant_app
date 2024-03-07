@@ -11,7 +11,7 @@ export default function Markers({ map, stores, setCurrentStore }: MarkerProps) {
   const loadKakaoMarkers = useCallback(() => {
     if (map) {
       stores &&
-        stores?.map((store) => {
+        stores?.data?.map((store) => {
           const imageSrc = store?.category
             ? `/images/markers/${store?.category}.png`
             : `/images/markers/default.png`;
